@@ -1,6 +1,7 @@
-FROM ubuntu:22.04
+FROM ubuntu:24.04
 LABEL author="Jason Rivers <jason@jasonrivers.co.uk>"
 LABEL forkedby="Dovetail BV"
+
 
 ENV NAGIOS_HOME            /opt/nagios
 ENV NAGIOS_USER            nagios
@@ -61,7 +62,7 @@ RUN echo postfix postfix/main_mailer_type string "'Internet Site'" | debconf-set
         libjson-perl                        \
         libldap2-dev                        \
         libmonitoring-plugin-perl           \
-        libmysqlclient-dev                  \
+        libmariadb-dev                      \
         libnagios-object-perl               \
         libnet-snmp-perl                    \
         libnet-snmp-perl                    \
@@ -76,11 +77,13 @@ RUN echo postfix postfix/main_mailer_type string "'Internet Site'" | debconf-set
         libtext-glob-perl                   \
         libwww-perl                         \
         m4                                  \
-        netcat                              \
+        netcat-traditional                  \
         parallel                            \
         php-cli                             \
         php-gd                              \
         postfix                             \
+        python3                             \
+        python3-venv                        \
         python3-pip                         \
         python3-nagiosplugin                \
         rsync                               \
@@ -91,7 +94,6 @@ RUN echo postfix postfix/main_mailer_type string "'Internet Site'" | debconf-set
         snmpd                               \
         snmp-mibs-downloader                \
         unzip                               \
-        python3                             \
                                                 && \
     apt-get clean && rm -Rf /var/lib/apt/lists/*
 
@@ -196,7 +198,7 @@ RUN cd /tmp                                                          && \
     cd /tmp && rm -Rf nagiosgraph
 
 RUN cd /opt                                                                         && \
-    pip install pymssql paho-mqtt pymssql                                           && \
+    pip install --break-system-packages pymssql paho-mqtt                           && \
     git clone https://github.com/willixix/naglio-plugins.git     WL-Nagios-Plugins  && \
     git clone https://github.com/JasonRivers/nagios-plugins.git  JR-Nagios-Plugins  && \
     git clone https://github.com/justintime/nagios-plugins.git   JE-Nagios-Plugins  && \
@@ -254,7 +256,6 @@ RUN echo "use_timezone=${NAGIOS_TIMEZONE}" >> ${NAGIOS_HOME}/etc/nagios.cfg
 
 
 # Copy example config in-case the user has started with empty var or etc
-
 RUN mkdir -p /orig/var                            && \
     mkdir -p /orig/etc                            && \
     mkdir -p /orig/graph-etc                      && \
@@ -287,7 +288,7 @@ RUN cd /opt/nagiosgraph/etc && \
 RUN rm /opt/nagiosgraph/etc/fix-nagiosgraph-multiple-selection.sh
 
 # enable all runit services
-RUN ln -s /etc/sv/* /etc/service
+RUN ln -sf /etc/sv/* /etc/service
 
 # fix ping permissions for nagios user
 RUN chmod u+s /usr/bin/ping

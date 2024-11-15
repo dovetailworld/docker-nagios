@@ -1,6 +1,6 @@
 # Docker-Nagios
 
-Nagios Core 4.5.7 running on Ubuntu 22.04.
+Nagios Core running on Ubuntu 24.04 LTS.
 
 Docker image for Nagios forked by Dovetail BV. 
 
@@ -71,5 +71,4 @@ The default credentials for the web interface is `nagiosadmin` / `nagios`
 * JE-Nagios-Plugins -  custom plugins from Justin Ellison [<https://github.com/justintime/nagios-plugins>]
 * DF-Nagios-Plugins - custom pluging for MSSQL monitoring from Dan Fruehauf [<https://github.com/danfruehauf/nagios-plugins>]
 * check-mqtt - custom plugin for mqtt monitoring from Jan-Piet Mens [<https://github.com/jpmens/check-mqtt.git>]
-* Nagios TV - Monitor your infrastructure with style from 
-Chris Carey [<https://github.com/chriscareycode/nagiostv-react.git>]
+* Nagios TV - Monitor your infrastructure with style from Chris Carey [<https://github.com/chriscareycode/nagiostv-react.git>]
