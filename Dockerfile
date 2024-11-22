@@ -159,7 +159,7 @@ RUN cd /tmp                                                                  && 
     cd nrpe                                                                  && \
     ./configure                                   \
         --with-ssl=/usr/bin/openssl               \
-        --with-ssl-lib=/usr/lib/x86_64-linux-gnu  \
+        --with-ssl-lib=/usr/lib/`uname -m`-linux-gnu \
                                                                              && \
     make check_nrpe                                                          && \
     cp src/check_nrpe ${NAGIOS_HOME}/libexec/                                && \
@@ -170,6 +170,10 @@ RUN cd /tmp                                                 && \
     git clone https://github.com/NagiosEnterprises/nsca.git && \
     cd nsca                                                 && \
     git checkout $NSCA_TAG                                  && \
+    mv config.guess config.guess.BAD && \
+    mv config.sub config.sub.BAD && \
+    wget http://cvs.savannah.gnu.org/viewvc/*checkout*/config/config/config.guess && \
+    wget http://cvs.savannah.gnu.org/viewvc/*checkout*/config/config/config.sub && \
     ./configure                                                \
         --prefix=${NAGIOS_HOME}                                \
         --with-nsca-user=${NAGIOS_USER}                        \
